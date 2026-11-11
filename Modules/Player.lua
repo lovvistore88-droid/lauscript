@@ -20,33 +20,4 @@ _G.MakeToggle(p, "Fly Mode", "Fly", function(state)
     local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     if state and hrp then
         local bv = Instance.new("BodyVelocity", hrp); bv.Name = "LauFly"; bv.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-        local bg = Instance.new("BodyGyro", hrp); bg.Name = "LauGyro"; bg.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
-        RunService.Heartbeat:Connect(function()
-            if not Config.Fly then return end
-            local dir = Vector3.zero
-            if UserInputService:IsKeyDown(Enum.KeyCode.W) then dir = dir + Camera.CFrame.LookVector end
-            if UserInputService:IsKeyDown(Enum.KeyCode.S) then dir = dir - Camera.CFrame.LookVector end
-            if UserInputService:IsKeyDown(Enum.KeyCode.A) then dir = dir - Camera.CFrame.RightVector end
-            if UserInputService:IsKeyDown(Enum.KeyCode.D) then dir = dir + Camera.CFrame.RightVector end
-            bv.Velocity = dir * Config.FlySpeed; bg.CFrame = Camera.CFrame
-        end)
-    elseif hrp then local b, g = hrp:FindFirstChild("LauFly"), hrp:FindFirstChild("LauGyro"); if b then b:Destroy() end; if g then g:Destroy() end end
-end)
-
-RunService.RenderStepped:Connect(function()
-    local c = LocalPlayer.Character
-    if not c then return end
-    local h = c:FindFirstChild("Humanoid")
-    if Config.InfJump and h and h:GetState() == Enum.HumanoidStateType.Freefall and UserInputService:IsKeyDown(Enum.KeyCode.Space) then h:ChangeState(Enum.HumanoidStateType.Jumping) end
-    if Config.Noclip then for _, part in pairs(c:GetDescendants()) do if part:IsA("BasePart") then part.CanCollide = false end end end
-    if Config.CrouchSpeed and h and h.MoveDirection.Magnitude > 0 and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then h.WalkSpeed = Config.WalkSpeed * 2 end
-    if Config.HighJump and h then h.JumpPower = 150 end
-    if Config.WalkOnWater then
-        for _, part in pairs(c:GetDescendants()) do
-            if part:IsA("BasePart") and part.Position.Y < 1 then part.CanCollide = true; part.Velocity = Vector3.new(part.Velocity.X, 0, part.Velocity.Z) end
-        end
-    end
-    if Config.AntiFling then
-        for _, part in pairs(c:GetDescendants()) do if part:IsA("BasePart") and part.Velocity.Magnitude > 100 then part.Velocity = Vector3.zero end end
-    end
-end)
+        local bg = Instance.new("BodyGyro", hrp); bg.Name = "
