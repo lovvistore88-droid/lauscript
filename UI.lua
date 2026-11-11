@@ -22,8 +22,18 @@ Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(0, 6)
 local Close = Instance.new("TextButton", Top); Close.Size = UDim2.new(0, 28, 0, 28); Close.Position = UDim2.new(1, -36, 0.5, -14); Close.BackgroundColor3 = Color3.fromRGB(180, 50, 60); Close.Text = "X"; Close.TextColor3 = Color3.fromRGB(255,255,255); Close.Font = Enum.Font.GothamBold
 Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 6)
 
-local LogoFrame = Instance.new("TextButton", Screen); LogoFrame.Size = UDim2.new(0, 50, 0, 50); LogoFrame.Position = UDim2.new(0, 20, 0, 100); LogoFrame.BackgroundColor3 = Color3.fromRGB(25, 20, 25); LogoFrame.Text = "L"; LogoFrame.TextColor3 = Color3.fromRGB(255, 80, 120); LogoFrame.Font = Enum.Font.GothamBlack; LogoFrame.TextSize = 24; LogoFrame.Visible = false
-Instance.new("UICorner", LogoFrame).CornerRadius = UDim.new(1, 0); Instance.new("UIStroke", LogoFrame).Color = Color3.fromRGB(255, 80, 120)
+-- LOGO CUSTOM
+local LogoFrame = Instance.new("ImageLabel", Screen)
+LogoFrame.Name = "LogoFrame"
+LogoFrame.Size = UDim2.new(0, 50, 0, 50)
+LogoFrame.Position = UDim2.new(0, 20, 0, 100)
+LogoFrame.BackgroundColor3 = Color3.fromRGB(25, 20, 25)
+LogoFrame.BackgroundTransparency = 0.2
+LogoFrame.Image = "rbxassetid://13390274291" -- GANTI PAKE ID GAMBAR ROBLOX LO
+LogoFrame.Visible = false
+LogoFrame.Active = true
+Instance.new("UICorner", LogoFrame).CornerRadius = UDim.new(1, 0)
+Instance.new("UIStroke", LogoFrame).Color = Color3.fromRGB(255, 80, 120)
 
 local Side = Instance.new("Frame", Main); Side.Size = UDim2.new(0, 130, 1, -40); Side.Position = UDim2.new(0, 0, 0, 40); Side.BackgroundColor3 = Color3.fromRGB(22, 20, 22); Side.BackgroundTransparency = 0.2; Side.BorderSizePixel = 0
 local Layout = Instance.new("UIListLayout", Side); Layout.Padding = UDim.new(0, 4); Layout.SortOrder = Enum.SortOrder.LayoutOrder; Instance.new("UIPadding", Side).PaddingTop = UDim.new(0, 10)
