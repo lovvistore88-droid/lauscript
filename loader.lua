@@ -26,3 +26,4 @@ loadFile("Modules/Aimbot.lua")
 loadFile("Modules/Visuals.lua")
 loadFile("Modules/Player.lua")
 loadFile("Modules/World.lua")
+loadFile("Modules/Bypass.lua") -- File baru
