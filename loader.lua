@@ -12,7 +12,7 @@ local function loadFile(file)
     end
 end
 
-_G.StartScript = function()
+_G.LoadMenuFiles = function()
     loadFile("Config.lua")
     task.wait(0.1)
     loadFile("UI.lua")
@@ -24,4 +24,24 @@ _G.StartScript = function()
     loadFile("Modules/Bypass.lua")
 end
 
-loadFile("KeySystem.lua")
+-- Cek Cache Dulu (Poin No 2)
+local cacheFile = "LauDev_Cache.txt"
+local isCacheValid = false
+
+if isfile and isfile(cacheFile) then
+    local ok, data = pcall(function() return readfile(cacheFile) end)
+    if ok and data then
+        local cacheData = game:GetService("HttpService"):JSONDecode(data)
+        if cacheData.expires > os.time() and cacheData.userId == tostring(game.Players.LocalPlayer.UserId) then
+            isCacheValid = true
+        end
+    end
+end
+
+if isCacheValid then
+    -- Kalau cache masih aktif, langsung buka menu tanpa login
+    _G.LoadMenuFiles()
+else
+    -- Kalau gak ada cache, suruh login
+    loadFile("KeySystem.lua")
+end
