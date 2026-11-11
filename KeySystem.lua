@@ -7,9 +7,6 @@ local LocalPlayer = Players.LocalPlayer
 if CoreGui:FindFirstChild("LauDevKey") then CoreGui.LauDevKey:Destroy() end
 local Screen = Instance.new("ScreenGui", CoreGui); Screen.Name="LauDevKey"; Screen.ResetOnSpawn=false
 
--- ==========================================
--- KONFIGURASI WEB (SINKRON DENGAN VERCEL LO)
--- ==========================================
 local WEB_BASE_URL = "https://laudevhub.vercel.app" 
 local SCRIPT_ID = "laudev01" 
 local API_VERIFY_URL = WEB_BASE_URL .. "/api/v1/verify"
@@ -39,7 +36,7 @@ GetKeyBtn.MouseButton1Click:Connect(function()
         if setclipboard then setclipboard(gatewayUrl) end
         game:GetService("GuiService"):OpenBrowserWindow(gatewayUrl)
     end)
-    GetKeyBtn.Text = "Link Dibuka di Browser!"
+    GetKeyBtn.Text = "Link Dibuka!"
     GetKeyBtn.TextColor3 = Color3.fromRGB(100, 255, 100)
     task.wait(2)
     GetKeyBtn.Text = "1. Ambil Key di Web"
@@ -64,12 +61,10 @@ Status.Size = UDim2.new(1, -40, 0, 30); Status.Position = UDim2.new(0, 20, 0, 20
 Status.BackgroundTransparency = 1; Status.Text = ""; Status.TextColor3 = Color3.fromRGB(255, 100, 100)
 Status.Font = Enum.Font.Gotham; Status.TextSize = 11; Status.TextWrapped = true
 
--- Animasi Masuk (Pop Out)
 Main.BackgroundTransparency = 0.1
 Main.Size = UDim2.new(0, 0, 0, 0)
 TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 350, 0, 260)}):Play()
 
--- Animasi Loading
 local function ShowLoadingAndStart(expireTime)
     TweenService:Create(Main, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
     for _, v in pairs(Main:GetDescendants()) do
@@ -100,7 +95,6 @@ local function ShowLoadingAndStart(expireTime)
     TweenService:Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}):Play()
     task.wait(0.5)
     
-    -- Simpan ke cache biar gak login 2x
     if writefile then
         local cacheData = { userId = tostring(LocalPlayer.UserId), expires = expireTime }
         writefile("LauDev_Cache.txt", HttpService:JSONEncode(cacheData))
@@ -110,7 +104,6 @@ local function ShowLoadingAndStart(expireTime)
     if _G.LoadMenuFiles then _G.LoadMenuFiles() end
 end
 
--- LOGIKA VERIFIKASI KE WEB
 Btn.MouseButton1Click:Connect(function()
     Status.Text = "Menghubungi Server..."
     Status.TextColor3 = Color3.fromRGB(255, 255, 100)
