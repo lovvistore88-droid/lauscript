@@ -13,7 +13,7 @@ local Screen = Instance.new("ScreenGui", CoreGui); Screen.Name="LauDevKey"; Scre
 local WEB_BASE_URL = "https://laudevhub.vercel.app" 
 local SCRIPT_ID = "laudev01" -- GANTI SESUAI ID DI DASHBOARD
 local API_VERIFY_URL = WEB_BASE_URL .. "/api/v1/verify"
-local API_KEY = "laudev01_live_2cf9b1bbc6ee7c26620f1433f615b32c55ba" -- GANTI DENGAN API KEY DARI DASHBOARD
+local API_KEY = "laudev01_live_ac1dffd8df8e0b9f496a748d0d036929e753" -- GANTI DENGAN API KEY DARI DASHBOARD
 
 local Main = Instance.new("Frame", Screen)
 Main.Size = UDim2.new(0, 350, 0, 260); Main.Position = UDim2.new(0.5, -175, 0.5, -130)
