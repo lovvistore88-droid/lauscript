@@ -7,15 +7,18 @@ local LocalPlayer = Players.LocalPlayer
 if CoreGui:FindFirstChild("LauDevKey") then CoreGui.LauDevKey:Destroy() end
 local Screen = Instance.new("ScreenGui", CoreGui); Screen.Name="LauDevKey"; Screen.ResetOnSpawn=false
 
+-- ==========================================
+-- KONFIGURASI WEB (SINKRON DENGAN VERCEL LO)
+-- ==========================================
 local WEB_BASE_URL = "https://laudevhub.vercel.app" 
 local SCRIPT_ID = "laudev01" 
 local API_VERIFY_URL = WEB_BASE_URL .. "/api/v1/verify"
-local API_KEY = "laudev01_live_ac1dffd8df8e0b9f496a748d0d036929e753" -- PASTIKAN SAMA
+local API_KEY = "laudev01_live_ac1dffd8df8e0b9f496a748d0d036929e753" 
 
 local Main = Instance.new("Frame", Screen)
 Main.Size = UDim2.new(0, 350, 0, 260); Main.Position = UDim2.new(0.5, -175, 0.5, -130)
 Main.BackgroundColor3 = Color3.fromRGB(18, 18, 20); Main.BorderSizePixel = 0
-Main.BackgroundTransparency = 1 -- Mulai dari transparan buat animasi
+Main.BackgroundTransparency = 1
 Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
 Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 80, 120)
 
@@ -36,7 +39,7 @@ GetKeyBtn.MouseButton1Click:Connect(function()
         if setclipboard then setclipboard(gatewayUrl) end
         game:GetService("GuiService"):OpenBrowserWindow(gatewayUrl)
     end)
-    GetKeyBtn.Text = "Link Dibuka!"
+    GetKeyBtn.Text = "Link Dibuka di Browser!"
     GetKeyBtn.TextColor3 = Color3.fromRGB(100, 255, 100)
     task.wait(2)
     GetKeyBtn.Text = "1. Ambil Key di Web"
@@ -61,12 +64,12 @@ Status.Size = UDim2.new(1, -40, 0, 30); Status.Position = UDim2.new(0, 20, 0, 20
 Status.BackgroundTransparency = 1; Status.Text = ""; Status.TextColor3 = Color3.fromRGB(255, 100, 100)
 Status.Font = Enum.Font.Gotham; Status.TextSize = 11; Status.TextWrapped = true
 
--- Animasi Masuk (Fade In & Pop Out)
+-- Animasi Masuk (Pop Out)
 Main.BackgroundTransparency = 0.1
 Main.Size = UDim2.new(0, 0, 0, 0)
 TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 350, 0, 260)}):Play()
 
--- Animasi Loading Super Gacor
+-- Animasi Loading
 local function ShowLoadingAndStart(expireTime)
     TweenService:Create(Main, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
     for _, v in pairs(Main:GetDescendants()) do
@@ -94,11 +97,10 @@ local function ShowLoadingAndStart(expireTime)
     TweenService:Create(BarFill, TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Size = UDim2.new(1, 0, 1, 0)}):Play()
     task.wait(1.7)
     
-    -- Efek Ledakan Animasi
     TweenService:Create(Main, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}):Play()
     task.wait(0.5)
     
-    -- Simpan ke Cache
+    -- Simpan ke cache biar gak login 2x
     if writefile then
         local cacheData = { userId = tostring(LocalPlayer.UserId), expires = expireTime }
         writefile("LauDev_Cache.txt", HttpService:JSONEncode(cacheData))
@@ -108,6 +110,7 @@ local function ShowLoadingAndStart(expireTime)
     if _G.LoadMenuFiles then _G.LoadMenuFiles() end
 end
 
+-- LOGIKA VERIFIKASI KE WEB
 Btn.MouseButton1Click:Connect(function()
     Status.Text = "Menghubungi Server..."
     Status.TextColor3 = Color3.fromRGB(255, 255, 100)
@@ -126,7 +129,6 @@ Btn.MouseButton1Click:Connect(function()
         local data = HttpService:JSONDecode(response.Body)
         if data.status == "success" then
             Status.Text = "Login Berhasil!"; Status.TextColor3 = Color3.fromRGB(100, 255, 100)
-            -- Kirim os.time() + sisa jam dari web ke fungsi loading
             local expireTime = os.time() + (data.remaining_hours * 3600)
             task.wait(0.5); ShowLoadingAndStart(expireTime)
         else
