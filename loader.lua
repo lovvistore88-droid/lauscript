@@ -1,5 +1,4 @@
-local baseUrl = "https://raw.githubusercontent.com/UsernameGithubLo/NamaRepo/main/"
--- GANTI "UsernameGithubLo/NamaRepo" SAMA PUNYA LO!
+local baseUrl = "https://raw.githubusercontent.com/lovvistore88-droid/lauscript/main/"-- GANTI "UsernameGithubLo/NamaRepo" SAMA PUNYA LO!
 
 local function loadFile(file)
     local ok, data = pcall(function()
