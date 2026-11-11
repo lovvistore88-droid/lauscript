@@ -4,20 +4,14 @@ local function loadFile(file)
     local ok, data = pcall(function()
         return game:HttpGet(baseUrl .. file .. "?t=" .. tick())
     end)
-    
     if ok and data then
         local func, err = loadstring(data)
-        if func then
-            task.spawn(func)
-        else
-            warn("[Lau Dev] Error syntax di file " .. file .. ": " .. tostring(err))
-        end
+        if func then task.spawn(func) else warn("[Lau Dev] Error di " .. file .. ": " .. tostring(err)) end
     else
-        warn("[Lau Dev] Gagal download file: " .. file)
+        warn("[Lau Dev] Gagal download: " .. file)
     end
 end
 
--- Fungsi buat mulai load menu utama setelah key valid
 _G.StartScript = function()
     loadFile("Config.lua")
     task.wait(0.1)
@@ -30,5 +24,4 @@ _G.StartScript = function()
     loadFile("Modules/Bypass.lua")
 end
 
--- Load Key System Duluan
 loadFile("KeySystem.lua")
