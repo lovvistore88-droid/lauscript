@@ -45,4 +45,4 @@ Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
 btn.MouseButton1Click:Connect(function()
     local ok, res = pcall(function() return HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")) end)
     if ok and res and res.data then for _, s in pairs(res.data) do if s.playing < s.maxPlayers and s.id ~= game.JobId then TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id, LocalPlayer) return end end end
-  end
+end)
