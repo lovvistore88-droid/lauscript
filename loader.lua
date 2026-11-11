@@ -1,4 +1,4 @@
-local baseUrl = "https://raw.githubusercontent.com/lovvistore88-droid/lauscript/main/"-- GANTI "UsernameGithubLo/NamaRepo" SAMA PUNYA LO!
+local baseUrl = "https://raw.githubusercontent.com/lovvistore88-droid/lauscript/main/"
 
 local function loadFile(file)
     local ok, data = pcall(function()
@@ -17,12 +17,18 @@ local function loadFile(file)
     end
 end
 
-loadFile("Config.lua")
-task.wait(0.1)
-loadFile("UI.lua")
-task.wait(0.5)
-loadFile("Modules/Aimbot.lua")
-loadFile("Modules/Visuals.lua")
-loadFile("Modules/Player.lua")
-loadFile("Modules/World.lua")
-loadFile("Modules/Bypass.lua") -- File baru
+-- Fungsi buat mulai load menu utama setelah key valid
+_G.StartScript = function()
+    loadFile("Config.lua")
+    task.wait(0.1)
+    loadFile("UI.lua")
+    task.wait(0.5)
+    loadFile("Modules/Aimbot.lua")
+    loadFile("Modules/Visuals.lua")
+    loadFile("Modules/Player.lua")
+    loadFile("Modules/World.lua")
+    loadFile("Modules/Bypass.lua")
+end
+
+-- Load Key System Duluan
+loadFile("KeySystem.lua")
