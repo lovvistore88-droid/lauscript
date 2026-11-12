@@ -6,9 +6,9 @@ local LocalPlayer = game.Players.LocalPlayer
 local Config = _G.LauConfig
 
 -- ==========================================
--- GANTI ANGKA DI BAWAH DENGAN ID DECAL LOGO LO
+-- GANTI LINK DI BAWAH INI DENGAN LINK RAW GAMBAR DI GITHUB LO
 -- ==========================================
-local LOGO_ID = "13390274291" -- GANTI PAKE ID GAMBAR ROBLOX LO
+local LOGO_URL = "https://raw.githubusercontent.com/lovvistore88-droid/lauscript/main/logo.png"
 
 if CoreGui:FindFirstChild("LauDevUI") then CoreGui.LauDevUI:Destroy() end
 local Screen = Instance.new("ScreenGui", CoreGui); Screen.Name="LauDevUI"; Screen.ResetOnSpawn=false
@@ -30,14 +30,30 @@ Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(0, 8)
 local Close = Instance.new("TextButton", Top); Close.Size = UDim2.new(0, 30, 0, 30); Close.Position = UDim2.new(1, -40, 0.5, -15); Close.BackgroundColor3 = Color3.fromRGB(200, 50, 60); Close.Text = "X"; Close.TextColor3 = Color3.fromRGB(255,255,255); Close.Font = Enum.Font.GothamBold
 Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 8)
 
--- LOGO PAKE IMAGEBUTTON (Biar bisa diklik)
+-- LOGO (Teks L dulu biar aman, gambar nyusul di background)
 local LogoFrame = Instance.new("ImageButton", Screen)
 LogoFrame.Name = "LogoFrame"; LogoFrame.Size = UDim2.new(0, 0, 0, 0); LogoFrame.Position = UDim2.new(0, 20, 0, 100)
 LogoFrame.BackgroundColor3 = Color3.fromRGB(25, 20, 28); LogoFrame.BackgroundTransparency = 0.1; LogoFrame.Visible = false
-LogoFrame.Image = "rbxassetid://" .. LOGO_ID 
-LogoFrame.ScaleType = Enum.ScaleType.Fit
-Instance.new("UICorner", LogoFrame).CornerRadius = UDim.new(1, 0); 
+LogoFrame.Image = "" 
+Instance.new("UICorner", LogoFrame).CornerRadius = UDim.new(1, 0)
 local LogoStroke = Instance.new("UIStroke", LogoFrame); LogoStroke.Color = Color3.fromRGB(255, 80, 120); LogoStroke.Thickness = 2
+
+-- Teks "L" sebagai fallback
+local LogoText = Instance.new("TextLabel", LogoFrame)
+LogoText.Size = UDim2.new(1, 0, 1, 0); LogoText.BackgroundTransparency = 1
+LogoText.Text = "L"; LogoText.TextColor3 = Color3.fromRGB(255, 80, 120); LogoText.Font = Enum.Font.GothamBlack; LogoText.TextSize = 24
+LogoText.Parent = LogoFrame
+
+-- Coba download gambar dari GitHub di background tanpa ngerusak script
+task.spawn(function()
+    pcall(function()
+        if getcustomasset then
+            local path = getcustomasset(LOGO_URL)
+            LogoFrame.Image = path
+            LogoText:Destroy()
+        end
+    end)
+end)
 
 local Side = Instance.new("Frame", Main); Side.Size = UDim2.new(0, 140, 1, -45); Side.Position = UDim2.new(0, 0, 0, 45); Side.BackgroundColor3 = Color3.fromRGB(22, 20, 25); Side.BackgroundTransparency = 0.1; Side.BorderSizePixel = 0
 local Layout = Instance.new("UIListLayout", Side); Layout.Padding = UDim.new(0, 6); Layout.SortOrder = Enum.SortOrder.LayoutOrder; Instance.new("UIPadding", Side).PaddingTop = UDim.new(0, 12)
