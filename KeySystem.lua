@@ -7,15 +7,20 @@ local LocalPlayer = Players.LocalPlayer
 if CoreGui:FindFirstChild("LauDevKey") then CoreGui.LauDevKey:Destroy() end
 local Screen = Instance.new("ScreenGui", CoreGui); Screen.Name="LauDevKey"; Screen.ResetOnSpawn=false
 
-local WEB_BASE_URL = "https://laudevhub.vercel.app" 
+-- ==========================================
+-- KONFIGURASI
+-- ==========================================
+local WEB_BASE_URL = "https://launadev.web.id" 
 local SCRIPT_ID = "laudev01" 
 local API_VERIFY_URL = WEB_BASE_URL .. "/api/v1/verify"
 local API_KEY = "laudev01_live_ac1dffd8df8e0b9f496a748d0d036929e753" 
+local LINKVERTISE_ID = "5427470" -- GANTI PAKE ID LINKVERTISE LO
 
+-- UI UTAMA
 local Main = Instance.new("Frame", Screen)
 Main.Size = UDim2.new(0, 350, 0, 260); Main.Position = UDim2.new(0.5, -175, 0.5, -130)
 Main.BackgroundColor3 = Color3.fromRGB(18, 18, 20); Main.BorderSizePixel = 0
-Main.BackgroundTransparency = 1
+Main.BackgroundTransparency = 0.1
 Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
 Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 80, 120)
 
@@ -26,21 +31,43 @@ Title.Font = Enum.Font.GothamBold; Title.TextSize = 14
 
 local GetKeyBtn = Instance.new("TextButton", Main)
 GetKeyBtn.Size = UDim2.new(1, -40, 0, 35); GetKeyBtn.Position = UDim2.new(0, 20, 0, 50)
-GetKeyBtn.BackgroundColor3 = Color3.fromRGB(45, 40, 45); GetKeyBtn.Text = "1. Ambil Key di Web"
+GetKeyBtn.BackgroundColor3 = Color3.fromRGB(45, 40, 45); GetKeyBtn.Text = "1. Ambil Key (Linkvertise)"
 GetKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255); GetKeyBtn.Font = Enum.Font.GothamBold; GetKeyBtn.TextSize = 12
 Instance.new("UICorner", GetKeyBtn).CornerRadius = UDim.new(0, 6)
 
+-- LOGIKA TOMBOL GET KEY (LINKVERTISE)
 GetKeyBtn.MouseButton1Click:Connect(function()
-    local gatewayUrl = WEB_BASE_URL .. "/gateway/" .. tostring(LocalPlayer.UserId) .. "/" .. SCRIPT_ID
-    pcall(function()
-        if setclipboard then setclipboard(gatewayUrl) end
-        game:GetService("GuiService"):OpenBrowserWindow(gatewayUrl)
+    GetKeyBtn.Text = "Meminta Link Unik..."
+    GetKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 100)
+    
+    local ok, res = pcall(function()
+        return HttpService:RequestAsync({
+            Url = WEB_BASE_URL .. "/api/generate-token",
+            Method = "POST",
+            Headers = { ["Content-Type"] = "application/json" },
+            Body = HttpService:JSONEncode({ userId = tostring(LocalPlayer.UserId), scriptId = SCRIPT_ID })
+        })
     end)
-    GetKeyBtn.Text = "Link Dibuka!"
-    GetKeyBtn.TextColor3 = Color3.fromRGB(100, 255, 100)
-    task.wait(2)
-    GetKeyBtn.Text = "1. Ambil Key di Web"
-    GetKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    
+    if ok and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        local gatewayUrl = data.url
+        local monetizedUrl = "https://linkvertise.com/" .. LINKVERTISE_ID .. "?o=" .. gatewayUrl
+        
+        pcall(function()
+            if setclipboard then setclipboard(monetizedUrl) end
+            game:GetService("GuiService"):OpenBrowserWindow(monetizedUrl)
+        end)
+        
+        GetKeyBtn.Text = "Link Dibuka di Browser!"
+        GetKeyBtn.TextColor3 = Color3.fromRGB(100, 255, 100)
+        task.wait(2)
+        GetKeyBtn.Text = "1. Ambil Key (Linkvertise)"
+        GetKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    else
+        GetKeyBtn.Text = "Gagal konek ke Web!"
+        GetKeyBtn.TextColor3 = Color3.fromRGB(255, 100, 100)
+    end
 end)
 
 local Box = Instance.new("TextBox", Main)
@@ -61,15 +88,12 @@ Status.Size = UDim2.new(1, -40, 0, 30); Status.Position = UDim2.new(0, 20, 0, 20
 Status.BackgroundTransparency = 1; Status.Text = ""; Status.TextColor3 = Color3.fromRGB(255, 100, 100)
 Status.Font = Enum.Font.Gotham; Status.TextSize = 11; Status.TextWrapped = true
 
-Main.BackgroundTransparency = 0.1
-Main.Size = UDim2.new(0, 0, 0, 0)
-TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 350, 0, 260)}):Play()
-
+-- ANIMASI LOADING & CACHE
 local function ShowLoadingAndStart(expireTime)
     TweenService:Create(Main, TweenInfo.new(0.3), {BackgroundTransparency = 1}):Play()
     for _, v in pairs(Main:GetDescendants()) do
         if v:IsA("TextLabel") or v:IsA("TextBox") or v:IsA("TextButton") then
-            TweenService:Create(v, TweenInfo.new(0.3), {TextTransparency = 1, BackgroundTransparency = 1}):Play()
+            pcall(function() TweenService:Create(v, TweenInfo.new(0.3), {TextTransparency = 1, BackgroundTransparency = 1}):Play() end)
         end
     end
     task.wait(0.3)
@@ -104,6 +128,7 @@ local function ShowLoadingAndStart(expireTime)
     if _G.LoadMenuFiles then _G.LoadMenuFiles() end
 end
 
+-- LOGIKA VERIFIKASI KEY
 Btn.MouseButton1Click:Connect(function()
     Status.Text = "Menghubungi Server..."
     Status.TextColor3 = Color3.fromRGB(255, 255, 100)
